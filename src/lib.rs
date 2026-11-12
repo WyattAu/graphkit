@@ -67,7 +67,11 @@ impl LinkGraph {
             predicate: predicate.to_string(),
             since_ms,
         };
-        match self.graph.find_edge(a, b).and_then(|edge| self.graph.edge_weight_mut(edge)) {
+        match self
+            .graph
+            .find_edge(a, b)
+            .and_then(|edge| self.graph.edge_weight_mut(edge))
+        {
             Some(existing) => {
                 if !existing.iter().any(|l| l.predicate == predicate) {
                     existing.push(link);
@@ -106,12 +110,18 @@ impl LinkGraph {
         };
         let name = |node: petgraph::graph::NodeIndex| self.graph[node].clone();
         let mut out = Vec::new();
-        for edge in self.graph.edges_directed(idx, petgraph::Direction::Outgoing) {
+        for edge in self
+            .graph
+            .edges_directed(idx, petgraph::Direction::Outgoing)
+        {
             for link in edge.weight() {
                 out.push((id.to_string(), name(edge.target()), link.clone()));
             }
         }
-        for edge in self.graph.edges_directed(idx, petgraph::Direction::Incoming) {
+        for edge in self
+            .graph
+            .edges_directed(idx, petgraph::Direction::Incoming)
+        {
             for link in edge.weight() {
                 out.push((name(edge.source()), id.to_string(), link.clone()));
             }
